@@ -39,7 +39,7 @@ static void connection_cb(uv_stream_t* server, int status) {
   r = uv_accept(server, (uv_stream_t*)&connection);
   assert(r == 0);
 
-  printf("received a new connection\n");
+  printf("connected to client\n");
   r = uv_read_start((uv_stream_t*)&connection, alloc_buffer,
                     read_data_from_client);
   uv_run(((uv_stream_t*)&connection)->loop, UV_RUN_DEFAULT);
@@ -59,6 +59,7 @@ int main() {
   r = uv_pipe_bind(&server_handle, SOCKET_NAME);
   assert(r == 0);
 
+  printf("server started. Waiting for client... \n");
   r = uv_listen((uv_stream_t*)&server_handle, 128, connection_cb);
   assert(r == 0);
 
